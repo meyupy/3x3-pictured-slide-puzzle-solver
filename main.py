@@ -8,7 +8,7 @@ import random
 
 pygame.init()
 
-S_WEIGHT, S_HEIGHT = 960, 720   # it has to be 4:3
+S_WIDTH, S_HEIGHT = 960, 720   # it has to be 4:3
 BG_COLOR, BOARD_COLOR = (63, 63, 63), (0, 0, 0)
 TEXT_COLOR = (159, 159, 159)
 BUTTON_COLOR_1, BUTTON_COLOR_2 = (79, 79, 79), (71, 71, 71)
@@ -16,7 +16,7 @@ BUTTON_COLOR_1, BUTTON_COLOR_2 = (79, 79, 79), (71, 71, 71)
 font_medium = pygame.font.Font("assets/fonts/MontserratMedium-nRxlJ.ttf", size=S_HEIGHT//18)
 font_small = pygame.font.Font("assets/fonts/MontserratSemibold-Yz368.ttf", size=S_HEIGHT//36)
 
-screen = pygame.display.set_mode((S_WEIGHT, S_HEIGHT))
+screen = pygame.display.set_mode((S_WIDTH, S_HEIGHT))
 pygame.display.set_caption("3x3 Slide Puzzle Solver")
 
 clock = pygame.time.Clock()
@@ -76,10 +76,10 @@ else:
         elif image.height > image.width:
             image = resize_image(image, image.width)
 
-    image = image.resize((3*S_WEIGHT//8, 3*S_WEIGHT//8), Image.LANCZOS)
+    image = image.resize((3 * S_WIDTH // 8, 3 * S_WIDTH // 8), Image.LANCZOS)
     shutil.rmtree(OUTPUT_PATH)
     os.mkdir(OUTPUT_PATH)
-    tile(file_name, image, OUTPUT_PATH, S_WEIGHT // 8)
+    tile(file_name, image, OUTPUT_PATH, S_WIDTH // 8)
     sliced_image_names = sorted(next(os.walk(OUTPUT_PATH), (None, None, []))[2])
 
 for image_name in sliced_image_names:
@@ -101,10 +101,10 @@ def produce_square_coordinates(s_w, m_x, m_y):
             (m_x+gap, m_y+5*gap), (m_x+3*gap, m_y+5*gap), (m_x+5*gap, m_y+5*gap)]
 
 
-item_coordinates = produce_item_coordinates(S_WEIGHT, S_HEIGHT)
-square_coordinates = produce_square_coordinates(S_WEIGHT, item_coordinates["board"][0], item_coordinates["board"][1])
+item_coordinates = produce_item_coordinates(S_WIDTH, S_HEIGHT)
+square_coordinates = produce_square_coordinates(S_WIDTH, item_coordinates["board"][0], item_coordinates["board"][1])
 
-board_rect = pygame.Rect(item_coordinates["board"], (S_WEIGHT//2, S_WEIGHT//2))
+board_rect = pygame.Rect(item_coordinates["board"], (S_WIDTH // 2, S_WIDTH // 2))
 
 
 class Square:
@@ -133,7 +133,7 @@ index_square_dict = {}   # index: number (index starts from 1)
 
 for n in range(8):
     new_pos = square_coordinates[n]
-    new_square = Square(number=n + 1, index=n + 1, weight=S_WEIGHT // 8, x_pos=new_pos[0], y_pos=new_pos[1])
+    new_square = Square(number=n + 1, index=n + 1, weight=S_WIDTH // 8, x_pos=new_pos[0], y_pos=new_pos[1])
     squares.append(new_square)
     index_square_dict[n + 1] = n + 1
 
@@ -171,15 +171,15 @@ class Button:
         return False
 
 
-button_solve = Button("Solve", S_WEIGHT // 8, item_coordinates["button_1"])
-button_reset = Button("Reset", S_WEIGHT // 8, item_coordinates["button_2"])
+button_solve = Button("Solve", S_WIDTH // 8, item_coordinates["button_1"])
+button_reset = Button("Reset", S_WIDTH // 8, item_coordinates["button_2"])
 
 
 class Display:
 
     def __init__(self, height, y_pos):
         self.height = height
-        self.body_rect = pygame.rect.Rect((0, y_pos), (S_WEIGHT, self.height))
+        self.body_rect = pygame.rect.Rect((0, y_pos), (S_WIDTH, self.height))
         self.text_surf = None
         self.text_rect = None
 
@@ -327,7 +327,7 @@ while True:
 
     screen.fill(BG_COLOR)
 
-    pygame.draw.rect(surface=screen, color=BOARD_COLOR, rect=board_rect, border_radius=S_WEIGHT//16)
+    pygame.draw.rect(surface=screen, color=BOARD_COLOR, rect=board_rect, border_radius=S_WIDTH // 16)
 
     current_perm = list(index_square_dict.values())
     empty_square_index, neighbour_indexes = find_empty_sq_and_neighbor_indexes(current_perm)
