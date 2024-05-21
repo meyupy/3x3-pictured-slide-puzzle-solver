@@ -1,5 +1,4 @@
 import pygame
-from sys import exit
 import os
 import shutil
 from PIL import Image
